@@ -9,6 +9,7 @@
         }
     },
     "scripts": {
+        "dev": "pnpm -r dev",
         "lint": "publint"
     },
     "peerDependencies": {
