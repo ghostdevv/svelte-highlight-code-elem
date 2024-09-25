@@ -7,7 +7,7 @@ import dedent from 'dedent';
 /** @returns {import('svelte/compiler').PreprocessorGroup} */
 export function svelte_highlight_code_elem() {
 	return {
-		name: 'test_pp',
+		name: 'svelte_highlight_code_elem',
 		async markup({ content, filename }) {
 			const ast = parse(content, { filename });
 			const s = new MagicString(content);
