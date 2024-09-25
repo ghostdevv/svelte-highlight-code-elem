@@ -21,8 +21,8 @@
     },
     "dependencies": {
         "dedent": "^1.5.3",
+        "estree-walker": "^3.0.3",
         "magic-string": "^0.30.11",
-        "shiki": "^1.18.0",
-        "zimmerframe": "^1.1.2"
+        "shiki": "^1.18.0"
     }
 }

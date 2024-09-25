@@ -1,5 +1,5 @@
+import { svelte_highlight_code_elem } from 'svelte-highlight-code-elem';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-import { svelte_highlight_code_elem } from './pp.js';
 
 export default {
 	// Consult https://svelte.dev/docs#compile-time-svelte-preprocess

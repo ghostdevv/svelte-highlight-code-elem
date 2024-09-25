@@ -1,6 +1,6 @@
-import MagicString from 'magic-string';
+import { asyncWalk } from 'estree-walker';
 import { parse } from 'svelte/compiler';
-import { walk } from 'zimmerframe';
+import MagicString from 'magic-string';
 import { codeToHtml } from 'shiki';
 import dedent from 'dedent';
 
@@ -12,30 +12,8 @@ export function svelte_highlight_code_elem() {
 			const ast = parse(content, { filename });
 			const s = new MagicString(content);
 
-			/** @type {Promise<any>[]} */
-			const to_process = [];
-
-			/**
-			 * @param {number} start
-			 * @param {number} end
-			 * @param {string} code
-			 * @param {string} lang
-			 */
-			async function highlight(start, end, code, lang) {
-				const highlighted_code = await codeToHtml(code, {
-					theme: 'vitesse-dark',
-					lang,
-				});
-
-				s.update(
-					start,
-					end,
-					`{@html ${JSON.stringify(highlighted_code)}}`,
-				);
-			}
-
-			walk(ast.html, null, {
-				Element({ name, attributes, start, end, children }, { next }) {
+			await asyncWalk(ast.html, {
+				async enter({ name, attributes, start, end, children }) {
 					if (name == 'code') {
 						const lang = attributes
 							.find((a) => a.name == 'lang')
@@ -50,14 +28,19 @@ export function svelte_highlight_code_elem() {
 							s.slice(children.at(0).start, children.at(-1).end),
 						);
 
-						to_process.push(highlight(start, end, code, lang));
-					} else {
-						next();
+						const highlighted_code = await codeToHtml(code, {
+							theme: 'vitesse-dark',
+							lang,
+						});
+
+						s.update(
+							start,
+							end,
+							`{@html ${JSON.stringify(highlighted_code)}}`,
+						);
 					}
 				},
 			});
-
-			await Promise.all(to_process);
 
 			return {
 				code: s.toString(),
