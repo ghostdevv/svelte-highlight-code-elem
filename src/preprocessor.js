@@ -12,11 +12,33 @@ const DEFAULT_CODE_CMP_PATH = `${__dirname}/Code.svelte`;
 const MARKER_COMMENT = '<!-- __shce_processed_uc__ -->';
 const CODE_CMP_NAME = 'Code_shce';
 
+/**
+ * @param {any[]=} attributes
+ * @param {string} name
+ * @returns {string | null}
+ */
+function get_attrib(attributes, name) {
+	const value = attributes?.find((a) => a.name == name)?.value;
+
+	return typeof value == 'undefined'
+		? null
+		: typeof value == 'boolean'
+		? value
+		: value?.at(0)?.data?.trim() ?? null;
+
+	return (
+		attributes
+			?.find((a) => a.name == name)
+			?.value?.at(0)
+			?.data?.trim() ?? null
+	);
+}
+
 /** @returns {import('svelte/compiler').PreprocessorGroup} */
 export function svelte_highlight_code_elem() {
 	return {
 		name: 'svelte_highlight_code_elem',
-		async script({ content, filename, markup }) {
+		async script({ content, markup }) {
 			if (markup.includes(MARKER_COMMENT)) {
 				const s = new MagicString(content);
 
@@ -41,14 +63,14 @@ export function svelte_highlight_code_elem() {
 					const { name, attributes, start, end, fragment } = node;
 
 					if (name == 'code') {
-						const lang = attributes
-							?.find((a) => a.name == 'lang')
-							?.value?.at(0)
-							?.data?.trim();
+						const lang = get_attrib(attributes, 'lang');
 
 						if (typeof lang != 'string' || lang.length == 0) {
 							return;
 						}
+
+						const inline =
+							get_attrib(attributes, 'inline') ?? false;
 
 						const code = dedent(
 							s.slice(
@@ -62,12 +84,14 @@ export function svelte_highlight_code_elem() {
 							lang,
 						});
 
-						s.update(
-							start,
-							end,
-							// prettier-ignore
-							`${MARKER_COMMENT}\n<${CODE_CMP_NAME} code={${JSON.stringify(highlighted_code)}}></${CODE_CMP_NAME}>`,
-						);
+						console.log({ inline });
+
+						const replacement = inline
+							? `{@html ${JSON.stringify(highlighted_code)}}`
+							: // prettier-ignore
+							  `${MARKER_COMMENT}\n<${CODE_CMP_NAME} code={${JSON.stringify(highlighted_code)}}></${CODE_CMP_NAME}>`;
+
+						s.update(start, end, replacement);
 
 						this.skip();
 					}
