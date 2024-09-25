@@ -25,13 +25,6 @@ function get_attrib(attributes, name) {
 		: typeof value == 'boolean'
 		? value
 		: value?.at(0)?.data?.trim() ?? null;
-
-	return (
-		attributes
-			?.find((a) => a.name == name)
-			?.value?.at(0)
-			?.data?.trim() ?? null
-	);
 }
 
 /** @returns {import('svelte/compiler').PreprocessorGroup} */
