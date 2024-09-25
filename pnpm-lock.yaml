@@ -4,42 +4,50 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  dedent:
-    specifier: ^1.5.3
-    version: 1.5.3
+importers:
 
-devDependencies:
-  '@sveltejs/vite-plugin-svelte':
-    specifier: ^3.1.1
-    version: 3.1.2(svelte@4.2.19)(vite@5.4.7)
-  '@tsconfig/svelte':
-    specifier: ^5.0.4
-    version: 5.0.4
-  magic-string:
-    specifier: ^0.30.11
-    version: 0.30.11
-  shiki:
-    specifier: ^1.18.0
-    version: 1.18.0
-  svelte:
-    specifier: ^4.2.18
-    version: 4.2.19
-  svelte-check:
-    specifier: ^3.8.5
-    version: 3.8.6(svelte@4.2.19)
-  tslib:
-    specifier: ^2.6.3
-    version: 2.7.0
-  typescript:
-    specifier: ^5.5.3
-    version: 5.6.2
-  vite:
-    specifier: ^5.4.1
-    version: 5.4.7
-  zimmerframe:
-    specifier: ^1.1.2
-    version: 1.1.2
+  .:
+    devDependencies:
+      dedent:
+        specifier: ^1.5.3
+        version: 1.5.3
+      shiki:
+        specifier: ^1.18.0
+        version: 1.18.0
+      svelte:
+        specifier: ^4.2.18
+        version: 4.2.19
+      zimmerframe:
+        specifier: ^1.1.2
+        version: 1.1.2
+
+  playground:
+    dependencies:
+      dedent:
+        specifier: ^1.5.3
+        version: 1.5.3
+    devDependencies:
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^3.1.1
+        version: 3.1.2(svelte@4.2.19)(vite@5.4.7)
+      '@tsconfig/svelte':
+        specifier: ^5.0.4
+        version: 5.0.4
+      svelte:
+        specifier: ^4.2.18
+        version: 4.2.19
+      svelte-check:
+        specifier: ^3.8.5
+        version: 3.8.6(svelte@4.2.19)
+      tslib:
+        specifier: ^2.6.3
+        version: 2.7.0
+      typescript:
+        specifier: ^5.5.3
+        version: 5.6.2
+      vite:
+        specifier: ^5.4.1
+        version: 5.4.7
 
 packages:
 
@@ -649,7 +657,6 @@ packages:
     peerDependenciesMeta:
       babel-plugin-macros:
         optional: true
-    dev: false
 
   /deepmerge@4.3.1:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
