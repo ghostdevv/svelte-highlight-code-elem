@@ -30,10 +30,7 @@ export function svelte_highlight_code_elem() {
 				s.update(
 					start,
 					end,
-					'<!-- svelte-ignore a11y-no-noninteractive-tabindex -->' +
-						highlighted_code
-							.replace(/\{/g, '&lbrace;')
-							.replace(/\}/g, '&rbrace;'),
+					`{@html ${JSON.stringify(highlighted_code)}}`,
 				);
 			}
 
