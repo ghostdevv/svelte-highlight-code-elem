@@ -1,10 +1,28 @@
 {
     "name": "svelte-highlight-code-elem",
     "private": true,
+    "type": "module",
+    "module": "./src/preprocessor.js",
+    "exports": {
+        ".": {
+            "import": "./src/preprocessor.js"
+        }
+    },
+    "scripts": {
+        "lint": "publint"
+    },
+    "peerDependencies": {
+        "svelte": "^4.0.0"
+    },
     "devDependencies": {
-        "dedent": "^1.5.3",
-        "shiki": "^1.18.0",
+        "publint": "^0.2.11",
         "svelte": "^4.2.18",
+        "tsup": "^8.3.0"
+    },
+    "dependencies": {
+        "dedent": "^1.5.3",
+        "magic-string": "^0.30.11",
+        "shiki": "^1.18.0",
         "zimmerframe": "^1.1.2"
     }
 }
