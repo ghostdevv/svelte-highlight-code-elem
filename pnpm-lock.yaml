@@ -36,9 +36,6 @@ importers:
       dedent:
         specifier: ^1.5.3
         version: 1.5.3
-      svelte-highlight-code-elem:
-        specifier: workspace:^
-        version: link:..
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.1.1
@@ -52,6 +49,9 @@ importers:
       svelte-check:
         specifier: ^3.8.5
         version: 3.8.6(svelte@4.2.19)
+      svelte-highlight-code-elem:
+        specifier: workspace:^
+        version: link:..
       tslib:
         specifier: ^2.6.3
         version: 2.7.0
