@@ -9,11 +9,15 @@ export function svelte_highlight_code_elem() {
 	return {
 		name: 'svelte_highlight_code_elem',
 		async markup({ content, filename }) {
-			const ast = parse(content, { filename });
+			const ast = parse(content, { filename, modern: true });
 			const s = new MagicString(content);
 
-			await asyncWalk(ast.html, {
-				async enter({ name, attributes, start, end, children }) {
+			ast.fragment.nodes;
+
+			await asyncWalk(ast.fragment, {
+				async enter(node) {
+					const { name, attributes, start, end, fragment } = node;
+
 					if (name == 'code') {
 						const lang = attributes
 							.find((a) => a.name == 'lang')
@@ -25,7 +29,10 @@ export function svelte_highlight_code_elem() {
 						}
 
 						const code = dedent(
-							s.slice(children.at(0).start, children.at(-1).end),
+							s.slice(
+								fragment.nodes.at(0).start,
+								fragment.nodes.at(-1).end,
+							),
 						);
 
 						const highlighted_code = await codeToHtml(code, {
