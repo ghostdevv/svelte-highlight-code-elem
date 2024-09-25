@@ -16,6 +16,7 @@
         "svelte": "^5.0.0-next.259"
     },
     "devDependencies": {
+        "@types/node": "^20.16.7",
         "publint": "^0.2.11",
         "svelte": "5.0.0-next.259",
         "tsup": "^8.3.0"
