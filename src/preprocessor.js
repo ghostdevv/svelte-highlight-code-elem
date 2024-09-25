@@ -38,6 +38,8 @@ export function svelte_highlight_code_elem() {
 							end,
 							`{@html ${JSON.stringify(highlighted_code)}}`,
 						);
+
+						this.skip();
 					}
 				},
 			});
