@@ -27,6 +27,31 @@ function get_attrib(attributes, name) {
 		: value?.at(0)?.data?.trim() ?? null;
 }
 
+/**
+ *
+ * @param {import('svelte/compiler').AST.Root} ast
+ * @param {(node: any, lang: string) => Promise<void>} cb
+ */
+async function find_code(ast, cb) {
+	await asyncWalk(ast.fragment, {
+		async enter(node) {
+			const { name, attributes } = node;
+
+			if (name == 'code') {
+				const lang = get_attrib(attributes, 'lang');
+
+				if (typeof lang != 'string' || lang.length == 0) {
+					return;
+				}
+
+				this.skip();
+
+				await cb(node, lang);
+			}
+		},
+	});
+}
+
 /** @returns {import('svelte/compiler').PreprocessorGroup} */
 export function svelte_highlight_code_elem() {
 	return {
@@ -51,44 +76,28 @@ export function svelte_highlight_code_elem() {
 			const ast = parse(content, { filename, modern: true });
 			const s = new MagicString(content);
 
-			await asyncWalk(ast.fragment, {
-				async enter(node) {
-					const { name, attributes, start, end, fragment } = node;
+			await find_code(ast, async (node, lang) => {
+				const { attributes, start, end, fragment } = node;
+				const inline = get_attrib(attributes, 'inline') ?? false;
 
-					if (name == 'code') {
-						const lang = get_attrib(attributes, 'lang');
+				const code = dedent(
+					s.slice(
+						fragment.nodes.at(0).start,
+						fragment.nodes.at(-1).end,
+					),
+				);
 
-						if (typeof lang != 'string' || lang.length == 0) {
-							return;
-						}
+				const highlighted_code = await codeToHtml(code, {
+					theme: 'vitesse-dark',
+					lang,
+				});
 
-						const inline =
-							get_attrib(attributes, 'inline') ?? false;
+				const replacement = inline
+					? `{@html ${JSON.stringify(highlighted_code)}}`
+					: // prettier-ignore
+					  `${MARKER_COMMENT}\n<${CODE_CMP_NAME} code={${JSON.stringify(highlighted_code)}}></${CODE_CMP_NAME}>`;
 
-						const code = dedent(
-							s.slice(
-								fragment.nodes.at(0).start,
-								fragment.nodes.at(-1).end,
-							),
-						);
-
-						const highlighted_code = await codeToHtml(code, {
-							theme: 'vitesse-dark',
-							lang,
-						});
-
-						console.log({ inline });
-
-						const replacement = inline
-							? `{@html ${JSON.stringify(highlighted_code)}}`
-							: // prettier-ignore
-							  `${MARKER_COMMENT}\n<${CODE_CMP_NAME} code={${JSON.stringify(highlighted_code)}}></${CODE_CMP_NAME}>`;
-
-						s.update(start, end, replacement);
-
-						this.skip();
-					}
-				},
+				s.update(start, end, replacement);
 			});
 
 			return s.hasChanged()
