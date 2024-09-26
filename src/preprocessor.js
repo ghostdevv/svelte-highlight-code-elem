@@ -95,7 +95,7 @@ export function svelte_highlight_code_elem() {
 				const replacement = inline
 					? `{@html ${JSON.stringify(highlighted_code)}}`
 					: // prettier-ignore
-					  `${MARKER_COMMENT}\n<${CODE_CMP_NAME} code={${JSON.stringify(highlighted_code)}}></${CODE_CMP_NAME}>`;
+					  `${MARKER_COMMENT}\n<${CODE_CMP_NAME}\n  code={${JSON.stringify(highlighted_code)}}\n  exec={${lang == 'ts' ? `async (s) => { ${code} }` : null}}\n>\n${lang == 'svelte' ? code : ''}\n</${CODE_CMP_NAME}>`;
 
 				s.update(start, end, replacement);
 			});

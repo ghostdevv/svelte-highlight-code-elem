@@ -4,15 +4,15 @@
 
 <main>
 	<!-- prettier-ignore -->
+	<code lang="svelte">
+		<h1>hello world</h1>
+	</code>
+
+	<!-- prettier-ignore -->
 	<code lang="ts">
-		import { Gooey } from 'gooey';
-
-		const gui = new Gooey();
-
-		gui.addFolder('test');
-
-		if (true) {
-			doSomething()
-		}
+		const button = document.createElement('button');
+		button.setAttribute('onclick', "alert('hello world')")
+		button.innerText = 'click me'
+		s.parent.appendChild(button);
 	</code>
 </main>
