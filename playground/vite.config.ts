@@ -1,7 +1,9 @@
-import { defineConfig } from 'vite'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { whyframeSvelte } from '@whyframe/svelte';
+import { whyframe } from '@whyframe/core';
+import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [svelte()],
-})
+	plugins: [svelte(), whyframe(), whyframeSvelte()],
+});

@@ -1,5 +1,11 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
+	import { Gooey } from 'gooey';
+
+	function create_gui(s) {
+		const gui = new Gooey({ container: s.parent });
+		return gui;
+	}
 </script>
 
 <main>
@@ -14,5 +20,11 @@
 		button.setAttribute('onclick', "alert('hello world')")
 		button.innerText = 'click me'
 		s.parent.appendChild(button);
+	</code>
+
+	<!-- prettier-ignore -->
+	<code lang="ts">
+		const gui = create_gui(s);
+		gui.addNumber('count', 10)
 	</code>
 </main>

@@ -9,4 +9,10 @@ export default {
 	vitePlugin: {
 		inspector: {},
 	},
+
+	compilerOptions: {
+		compatibility: {
+			componentApi: 4,
+		},
+	},
 };

@@ -12,6 +12,9 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "4.0.0-next.7",
     "@tsconfig/svelte": "^5.0.4",
+    "@whyframe/core": "^0.1.11",
+    "@whyframe/svelte": "^0.1.7",
+    "gooey": "^0.3.2",
     "svelte": "5.0.0-next.259",
     "svelte-check": "^3.8.5",
     "svelte-highlight-code-elem": "workspace:^",
